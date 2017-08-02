@@ -11,6 +11,9 @@ namespace Alcon
     {
         static void Main(string[] args)
         {
+            FileUtil fileUtil = new FileUtil();
+            fileUtil.ReadInputCSV();
+            System.Console.ReadLine();
         }
     }
 }

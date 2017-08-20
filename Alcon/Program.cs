@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenCvSharp;
 
 namespace Alcon
 {
@@ -12,8 +11,11 @@ namespace Alcon
         static void Main(string[] args)
         {
             FileUtil fileUtil = new FileUtil();
-            fileUtil.ReadInputCSV();
-            System.Console.ReadLine();
+            string[] inputData = fileUtil.ReadInputCSV();
+            ImageProc imageProc = new ImageProc(inputData);
+            imageProc.ReadImage();
+            imageProc.ShowImage();
+            //Console.ReadLine();
         }
     }
 }

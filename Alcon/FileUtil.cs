@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,15 +11,29 @@ namespace Alcon
     class FileUtil
     {
 
+        // 
+        string fileName;
+        int T, Z;
+        
         public void ReadInputCSV()
         {
             //System.IO.StreamReader file = new System.IO.StreamReader(@"Pre_Data01");
-            string[] files = System.IO.Directory.GetDirectories(@"Pre_Data01");
-            for (int i = 0; i < files.Length; i++)
+            //string[] files = System.IO.Directory.GetDirectories(@"Pre_Data05");
+            //for (int i = 0; i < files.Length; i++)
+            //{
+            //    Console.WriteLine(files[i]);
+            //}
+            string line;
+            int index = 0;
+            string[] ary = new string[3];
+            StreamReader file = new StreamReader(@"Pre_Data01/input.csv");
+            while((line = file.ReadLine()) != null)
             {
-                Console.WriteLine(files[i]);
+                ary[index++] = line;
+                Console.WriteLine(line);
+                if (index == 3) break;
             }
-            
+
         }
 
         public static List<string> getImageList(string path)

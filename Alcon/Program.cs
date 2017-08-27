@@ -13,9 +13,13 @@ namespace Alcon
             FileUtil fileUtil = new FileUtil();
             string[] inputData = fileUtil.ReadInputCSV();
             ImageProc imageProc = new ImageProc(inputData);
-            imageProc.ReadImage();
+            imageProc.Exec();
             imageProc.ShowImage();
-            //Console.ReadLine();
+
+            //ImageProc2 imageProc2 = new ImageProc2(inputData);
+            //imageProc2.ReadImage();
+            //imageProc2.ExecDetection();
+            //imageProc2.ShowImage();
         }
     }
 }

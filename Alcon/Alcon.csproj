@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="FileUtil.cs" />
     <Compile Include="ImageProc.cs" />
+    <Compile Include="ImageProc2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

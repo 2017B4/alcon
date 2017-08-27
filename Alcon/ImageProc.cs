@@ -13,6 +13,8 @@ namespace Alcon
         int all_count = 0;
         int count_1 = 0; // 前フレームの分裂候補数
 
+        int event_count;
+
         List<List<Mat>> Binary = new List<List<Mat>>();
         //List<List<Mat>> Result = new List<List<Mat>>();
         Mat[][] Result;
@@ -54,6 +56,21 @@ namespace Alcon
                     Detect(bin, ref count_x_1, ref count_y_1, t, z);
                 }
             }
+
+            //for (int z = 0; z < Z; z++)
+            //{
+            //    for (int t = 0; t < T; t++)
+            //    {
+            //        string name = $"{fileName}/t{t + 1:000}/{fileName}_t{t + 1:000}_page_{z + 1:0000}.tif";
+            //        Result[t][z] = Cv2.ImRead(name, ImreadModes.Color);
+            //        Mat tmp = Cv2.ImRead(name, 0);
+            //        Mat bin = new Mat();
+            //        Cv2.Threshold(tmp, bin, 0, 255, ThresholdTypes.Otsu | ThresholdTypes.Binary);
+            //        Detect(bin, ref count_x_1, ref count_y_1, t, z);
+            //    }
+            //}
+            CheckSameEvent();
+            return;
         }
 
         public void Detect(Mat bin, ref List<int> count_x_1, ref List<int> count_y_1, int t, int z)
@@ -153,6 +170,57 @@ namespace Alcon
 
             if (tmp == 4) return true;
             return false;
+        }
+
+        // 候補の絞り込み
+        void CheckSameEvent()
+        {
+            int same = 0;
+            List<int> same_event = new List<int>();
+            List<int> same_figure = new List<int>();
+            for (int now = 0; now < all_count; now++)
+            {
+                for(int other = 0; other < all_count; other++)
+                {
+                    if (now == other) continue;
+                    int dist_x = Math.Abs(all_x[now] - all_x[other]);
+                    int dist_y = Math.Abs(all_y[now] - all_y[other]);
+                    if(dist_x <= 30 && dist_y <= 30)
+                    {
+                        same++;
+                    }
+                }
+                same_event.Add(same);
+            }
+
+            for (int g = 0; g < all_count; g++) { Console.WriteLine("{0}:同じ候補数{1}", g, same_event[g]); }
+
+            for (int g = 0; g < all_count; g++)
+            {
+                same = 0;
+                int diff = 0;
+                if (event_count == 0) {
+                    event_count++;
+                    same_figure.Add(same_event[g]);
+                } else {
+                    for (int h = 0; h < event_count; h++)
+                    {
+                        if (same_event[g] == same_figure[h]) {//同じ候補数を見つけたらsameを増やす
+                            same++;
+                        }
+                        else {//同じ候補数が見つからなければdiffを増やす
+                            diff++;
+                        }
+                    }
+                }
+                //１度も見つけた数字があなければイベント数を増やす
+                if (same == 0 && diff > 0 && event_count != 0) {
+                    event_count++;
+                    same_figure.Add(same_event[g]);
+                }
+            }
+            Console.WriteLine("イベント数:{0}", event_count);
+            //Console.WriteLine("イベント数 : {0}", all_count - same);
         }
 
         public void ShowImage()
